@@ -2667,3 +2667,39 @@ panic = "abort"
 
 [package.metadata.docs.rs]
 cargo-args = ["-Zunstable-options", "-Zrustdoc-scrape-examples"]
+
+[patch.crates-io]
+bevy_a11y = { path = "crates/bevy_a11y" }
+bevy_animation = { path = "crates/bevy_animation" }
+bevy_app = { path = "crates/bevy_app" }
+bevy_asset = { path = "crates/bevy_asset" }
+bevy_audio = { path = "crates/bevy_audio" }
+bevy_core = { path = "crates/bevy_core" }
+bevy_core_pipeline = { path = "crates/bevy_core_pipeline" }
+bevy_derive = { path = "crates/bevy_derive" }
+bevy_diagnostic = { path = "crates/bevy_diagnostic" }
+bevy_dylib = { path = "crates/bevy_dylib" }
+bevy_dynamic_plugin = { path = "crates/bevy_dynamic_plugin" }
+bevy_ecs = { path = "crates/bevy_ecs" }
+bevy_hierarchy = { path = "crates/bevy_hierarchy" }
+bevy_gilrs = { path = "crates/bevy_gilrs" }
+bevy_gizmos = { path = "crates/bevy_gizmos" }
+bevy_gltf = { path = "crates/bevy_gltf" }
+bevy_internal = { path = "crates/bevy_internal" }
+bevy_input = { path = "crates/bevy_input" }
+bevy_log = { path = "crates/bevy_log" }
+bevy_math = { path = "crates/bevy_math" }
+bevy_pbr = { path = "crates/bevy_pbr" }
+bevy_ptr = { path = "crates/bevy_ptr" }
+bevy_reflect = { path = "crates/bevy_reflect" }
+bevy_render = { path = "crates/bevy_render" }
+bevy_scene = { path = "crates/bevy_scene" }
+bevy_sprite = { path = "crates/bevy_sprite" }
+bevy_tasks = { path = "crates/bevy_tasks" }
+bevy_text = { path = "crates/bevy_text" }
+bevy_time = { path = "crates/bevy_time" }
+bevy_ui = { path = "crates/bevy_ui" }
+bevy_utils = { path = "crates/bevy_utils" }
+bevy_transform = { path = "crates/bevy_transform" }
+bevy_window = { path = "crates/bevy_window" }
+bevy_winit = { path = "crates/bevy_winit" }

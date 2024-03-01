@@ -11,7 +11,7 @@ name = "bevy_mobile_example"
 crate-type = ["staticlib", "cdylib"]
 
 [dependencies]
-bevy = { path = "../../" }
+bevy = "0.13.0"
 
 [package.metadata.android]
 package = "org.bevyengine.example"
