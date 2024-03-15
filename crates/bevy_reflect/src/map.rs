@@ -289,7 +289,11 @@ impl Map for DynamicMap {
         key: Box<dyn Reflect>,
         mut value: Box<dyn Reflect>,
     ) -> Option<Box<dyn Reflect>> {
-        match self.indices.entry(key.reflect_hash().expect(HASH_ERROR)) {
+        match self.indices.entry(
+            key.reflect_hash()
+                .ok_or_else(|| format!("{}: {}", HASH_ERROR, key.reflect_type_path()))
+                .unwrap(),
+        ) {
             Entry::Occupied(entry) => {
                 let (_old_key, old_value) = self.values.get_mut(*entry.get()).unwrap();
                 std::mem::swap(old_value, &mut value);
