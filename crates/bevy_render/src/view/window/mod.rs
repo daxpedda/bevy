@@ -172,6 +172,7 @@ struct SurfaceData {
     // TODO: what lifetime should this be?
     surface: WgpuWrapper<wgpu::Surface<'static>>,
     configuration: SurfaceConfiguration,
+    caps_present_modes: Vec<wgpu::PresentMode>,
 }
 
 #[derive(Resource, Default)]
@@ -351,6 +352,13 @@ pub fn create_surfaces(
                         PresentMode::Immediate => wgpu::PresentMode::Immediate,
                         PresentMode::AutoVsync => wgpu::PresentMode::AutoVsync,
                         PresentMode::AutoNoVsync => wgpu::PresentMode::AutoNoVsync,
+                        PresentMode::AutoNoTearing => {
+                            if caps.present_modes.contains(&wgpu::PresentMode::Mailbox) {
+                                wgpu::PresentMode::Mailbox
+                            } else {
+                                wgpu::PresentMode::Fifo
+                            }
+                        }
                     },
                     desired_maximum_frame_latency: window
                         .desired_maximum_frame_latency
@@ -379,6 +387,7 @@ pub fn create_surfaces(
                 SurfaceData {
                     surface: WgpuWrapper::new(surface),
                     configuration,
+                    caps_present_modes: caps.present_modes,
                 }
             });
 
@@ -392,6 +401,16 @@ pub fn create_surfaces(
                 PresentMode::Immediate => wgpu::PresentMode::Immediate,
                 PresentMode::AutoVsync => wgpu::PresentMode::AutoVsync,
                 PresentMode::AutoNoVsync => wgpu::PresentMode::AutoNoVsync,
+                PresentMode::AutoNoTearing => {
+                    if data
+                        .caps_present_modes
+                        .contains(&wgpu::PresentMode::Mailbox)
+                    {
+                        wgpu::PresentMode::Mailbox
+                    } else {
+                        wgpu::PresentMode::Fifo
+                    }
+                }
             };
             render_device.configure_surface(&data.surface, &data.configuration);
         }

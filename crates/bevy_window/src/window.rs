@@ -1184,7 +1184,7 @@ pub enum VideoModeSelection {
 /// may be observed with [`Immediate`] mode, but will not be observed with [`Mailbox`] or
 /// [`Fifo`].
 ///
-/// [`AutoVsync`] or [`AutoNoVsync`] will gracefully fallback to [`Fifo`] when unavailable.
+/// [`AutoVsync`], [`AutoNoVsync`] or [`AutoNoTearing`] will gracefully fallback to [`Fifo`] when unavailable.
 ///
 /// [`Immediate`] or [`Mailbox`] will panic if not supported by the platform.
 ///
@@ -1194,7 +1194,7 @@ pub enum VideoModeSelection {
 /// [`Mailbox`]: PresentMode::Mailbox
 /// [`AutoVsync`]: PresentMode::AutoVsync
 /// [`AutoNoVsync`]: PresentMode::AutoNoVsync
-#[repr(C)]
+/// [`AutoNoTearing`]: PresentMode::AutoNoTearing
 #[derive(Default, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 #[cfg_attr(
     feature = "bevy_reflect",
@@ -1211,11 +1211,15 @@ pub enum PresentMode {
     /// Chooses [`FifoRelaxed`](Self::FifoRelaxed) -> [`Fifo`](Self::Fifo) based on availability.
     ///
     /// Because of the fallback behavior, it is supported everywhere.
-    AutoVsync = 0, // NOTE: The explicit ordinal values mirror wgpu.
+    AutoVsync,
     /// Chooses [`Immediate`](Self::Immediate) -> [`Mailbox`](Self::Mailbox) -> [`Fifo`](Self::Fifo) (on web) based on availability.
     ///
     /// Because of the fallback behavior, it is supported everywhere.
-    AutoNoVsync = 1,
+    AutoNoVsync,
+    /// Chooses [`Mailbox`](Self::Mailbox) -> [`Fifo`](Self::Fifo) based on availability.
+    ///
+    /// Because of the fallback behavior, it is supported everywhere.
+    AutoNoTearing,
     /// Presentation frames are kept in a First-In-First-Out queue approximately 3 frames
     /// long. Every vertical blanking period, the presentation engine will pop a frame
     /// off the queue to display. If there is no frame to display, it will present the same
@@ -1231,7 +1235,7 @@ pub enum PresentMode {
     ///
     /// If you don't know what mode to choose, choose this mode. This is traditionally called "Vsync On".
     #[default]
-    Fifo = 2,
+    Fifo,
     /// Presentation frames are kept in a First-In-First-Out queue approximately 3 frames
     /// long. Every vertical blanking period, the presentation engine will pop a frame
     /// off the queue to display. If there is no frame to display, it will present the
@@ -1247,7 +1251,7 @@ pub enum PresentMode {
     /// Supported on AMD on Vulkan.
     ///
     /// This is traditionally called "Adaptive Vsync"
-    FifoRelaxed = 3,
+    FifoRelaxed,
     /// Presentation frames are not queued at all. The moment a present command
     /// is executed on the GPU, the presented image is swapped onto the front buffer
     /// immediately.
@@ -1257,7 +1261,7 @@ pub enum PresentMode {
     /// Supported on most platforms except older DX12 and Wayland.
     ///
     /// This is traditionally called "Vsync Off".
-    Immediate = 4,
+    Immediate,
     /// Presentation frames are kept in a single-frame queue. Every vertical blanking period,
     /// the presentation engine will pop a frame from the queue. If there is no frame to display,
     /// it will present the same frame again until the next vblank.
@@ -1271,7 +1275,7 @@ pub enum PresentMode {
     /// Supported on DX11/12 on Windows 10, NVidia on Vulkan and Wayland on Vulkan.
     ///
     /// This is traditionally called "Fast Vsync"
-    Mailbox = 5,
+    Mailbox,
 }
 
 /// Specifies how the alpha channel of the textures should be handled during compositing, for a [`Window`].
