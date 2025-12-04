@@ -1,3 +1,5 @@
+use core::fmt::Debug;
+
 use bevy_ecs::prelude::{Component, ReflectComponent};
 use bevy_reflect::{std_traits::ReflectDefault, Reflect};
 use smallvec::SmallVec;
@@ -28,7 +30,7 @@ impl Default for &RenderLayers {
     }
 }
 
-impl core::fmt::Debug for RenderLayers {
+impl Debug for RenderLayers {
     fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         f.debug_tuple("RenderLayers")
             .field(&self.iter().collect::<Vec<_>>())
@@ -108,7 +110,7 @@ impl RenderLayers {
     }
 
     /// Get an iterator of the layers.
-    pub fn iter(&self) -> impl Iterator<Item = Layer> + '_ {
+    pub fn iter(&self) -> impl Iterator<Item = Layer> + Debug + '_ {
         self.0.iter().copied().zip(0..).flat_map(Self::iter_layers)
     }
 
@@ -153,7 +155,7 @@ impl RenderLayers {
         self.0.resize(new_size, 0u64);
     }
 
-    fn iter_layers(buffer_and_offset: (u64, usize)) -> impl Iterator<Item = Layer> + 'static {
+    fn iter_layers(buffer_and_offset: (u64, usize)) -> impl Iterator<Item = Layer> + Debug + 'static {
         let (mut buffer, mut layer) = buffer_and_offset;
         layer *= 64;
         core::iter::from_fn(move || {
